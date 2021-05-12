@@ -1,17 +1,54 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header style="text-align: center;" class="ion-no-border">
+  <ion-toolbar color="dark">
     <ion-title>
-      Tab 2
+      Busqueda de Peliculas
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content color="dark">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
-</ion-content>
+  <ion-searchbar color="dark" [value]="textoBuscar" placeholder="Buscar" debounce="700" animated (ionChange)="buscar($event)">
+  </ion-searchbar>
+
+
+  <ion-grid fixed *ngIf="buscando === true ">
+    <ion-row>
+      <ion-col size="12" style="text-align: center;"> 
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+
+
+    <ion-list style="padding-top: 0px; padding-bottom: 0px" *ngIf="valor.length === 0" >
+      <ion-list-header color="dark">
+        <ion-label>Ideas</ion-label>
+      </ion-list-header>
+      
+      <ion-item color="dark" *ngFor="let idea of ideas" (click)="textoBuscar = idea">
+        <ion-label color="primary">{{idea}}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6" *ngFor="let peli of peliculasBuscadas">
+
+        <ion-card (click)="detalle(peli.id)">
+          <ion-card-header>
+            <img [src]="peli.poster_path | imagen ">
+            <ion-card-subtitle>{{peli.realase_date}}</ion-card-subtitle>
+            <ion-card-title> {{peli.title}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content text-center> Votos:
+            {{peli.vote_average}} <ion-icon slot="start" name="star"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      </ion-row>
+    </ion-grid>
+   
+    
+  </ion-content>
